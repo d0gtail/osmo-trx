@@ -269,6 +269,18 @@ DEFUN(cfg_rssi_offset, cfg_rssi_offset_cmd,
 	return CMD_SUCCESS;
 }
 
+DEFUN(cfg_freq_offset, cfg_freq_offset_cmd,
+	"freq-offset INT",
+	"Shift the baseband frequency\n"
+	"Frequency shift in kHz (e.g. -145300)\n")
+{
+	struct trx_ctx *trx = trx_from_vty(vty);
+
+	trx->cfg.freq_offset = atoi(argv[0]);
+
+	return CMD_SUCCESS;
+}
+
 DEFUN(cfg_swap_channels, cfg_swap_channels_cmd,
 	"swap-channels (disable|enable)",
 	"Swap channels (default=disable)\n")
@@ -562,6 +574,7 @@ int trx_vty_init(struct trx_ctx* trx)
 	install_element(TRX_NODE, &cfg_multi_arfcn_cmd);
 	install_element(TRX_NODE, &cfg_offset_cmd);
 	install_element(TRX_NODE, &cfg_rssi_offset_cmd);
+	install_element(TRX_NODE, &cfg_freq_offset_cmd);
 	install_element(TRX_NODE, &cfg_swap_channels_cmd);
 	install_element(TRX_NODE, &cfg_egprs_cmd);
 	install_element(TRX_NODE, &cfg_rt_prio_cmd);

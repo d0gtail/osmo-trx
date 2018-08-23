@@ -107,7 +107,7 @@ public:
               size_t tx_sps, size_t rx_sps, size_t chans,
               GSM::Time wTransmitLatency,
               RadioInterface *wRadioInterface,
-              double wRssiOffset);
+              double wRssiOffset, int freqOffset);
 
   /** Destructor */
   ~Transceiver();
@@ -176,6 +176,7 @@ private:
   double rxFullScale;                     ///< full scale output to radio
 
   double rssiOffset;                      ///< RSSI to dBm conversion offset
+  int freqOffset;                         ///< Tuning freq. offset
 
   /** modulate and add a burst to the transmit queue */
   void addRadioVector(size_t chan, BitVector &bits,

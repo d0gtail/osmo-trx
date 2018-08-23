@@ -125,7 +125,7 @@ int makeTransceiver(struct trx_ctx *trx, RadioInterface *radio)
 	transceiver = new Transceiver(trx->cfg.base_port, trx->cfg.bind_addr,
 			      trx->cfg.remote_addr, trx->cfg.tx_sps,
 			      trx->cfg.rx_sps, trx->cfg.num_chans, GSM::Time(3,0),
-			      radio, trx->cfg.rssi_offset);
+			      radio, trx->cfg.rssi_offset, trx->cfg.freq_offset);
 	if (!transceiver->init(trx->cfg.filler, trx->cfg.rtsc,
 		       trx->cfg.rach_delay, trx->cfg.egprs)) {
 		LOG(ALERT) << "Failed to initialize transceiver";
@@ -400,7 +400,8 @@ static void print_config(struct trx_ctx *trx)
 	ost << "   Reference............... " << trx->cfg.clock_ref << std::endl;
 	ost << "   C0 Filler Table......... " << trx->cfg.filler << std::endl;
 	ost << "   Multi-Carrier........... " << trx->cfg.multi_arfcn << std::endl;
-	ost << "   Tuning offset........... " << trx->cfg.offset << std::endl;
+	ost << "   LO freq. offset......... " << trx->cfg.offset << std::endl;
+	ost << "   Tune freq. offset....... " << trx->cfg.freq_offset << std::endl;
 	ost << "   RSSI to dBm offset...... " << trx->cfg.rssi_offset << std::endl;
 	ost << "   Swap channels........... " << trx->cfg.swap_channels << std::endl;
 	ost << "   Tx Antennas.............";

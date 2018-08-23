@@ -111,11 +111,11 @@ Transceiver::Transceiver(int wBasePort,
                          size_t tx_sps, size_t rx_sps, size_t chans,
                          GSM::Time wTransmitLatency,
                          RadioInterface *wRadioInterface,
-                         double wRssiOffset)
+                         double wRssiOffset, int wFreqOffset)
   : mBasePort(wBasePort), mLocalAddr(TRXAddress), mRemoteAddr(GSMcoreAddress),
     mClockSocket(TRXAddress, wBasePort, GSMcoreAddress, wBasePort + 100),
     mTransmitLatency(wTransmitLatency), mRadioInterface(wRadioInterface),
-    rssiOffset(wRssiOffset),
+    rssiOffset(wRssiOffset), freqOffset(wFreqOffset),
     mSPSTx(tx_sps), mSPSRx(rx_sps), mChans(chans), mEdge(false), mOn(false), mForceClockInterface(false),
     mTxFreq(0.0), mRxFreq(0.0), mTSC(0), mMaxExpectedDelayAB(0), mMaxExpectedDelayNB(0),
     mWriteBurstToDiskMask(0)
@@ -783,7 +783,7 @@ void Transceiver::driveControl(size_t chan)
     // tune receiver
     int freqKhz;
     sscanf(params, "%d", &freqKhz);
-    mRxFreq = freqKhz * 1e3;
+    mRxFreq = (freqKhz + freqOffset) * 1e3;
     if (!mRadioInterface->tuneRx(mRxFreq, chan)) {
        LOG(ALERT) << "RX failed to tune";
        sprintf(response,"RSP RXTUNE 1 %d",freqKhz);
@@ -794,7 +794,7 @@ void Transceiver::driveControl(size_t chan)
     // tune txmtr
     int freqKhz;
     sscanf(params, "%d", &freqKhz);
-    mTxFreq = freqKhz * 1e3;
+    mTxFreq = (freqKhz + freqOffset) * 1e3;
     if (!mRadioInterface->tuneTx(mTxFreq, chan)) {
        LOG(ALERT) << "TX failed to tune";
        sprintf(response,"RSP TXTUNE 1 %d",freqKhz);

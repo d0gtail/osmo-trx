@@ -55,6 +55,7 @@ struct trx_ctx {
 		enum FillerType filler;
 		bool multi_arfcn;
 		double offset;
+		int freq_offset;
 		double rssi_offset;
 		bool swap_channels;
 		bool egprs;
